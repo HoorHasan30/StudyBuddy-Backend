@@ -4,7 +4,7 @@ const sessionSchema = new Schema({
         type: Number,
         required: true
     },
-    topicsCoverd:{
+    topicsCovered:{
         type: String,
         trim: true
     },
