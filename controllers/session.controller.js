@@ -1,9 +1,9 @@
 const Session = require('../models/Session')
 
-async function createSession(req, res){
+async function createSession(req, res) {
     try {
-        
-        const {duration, topicsCovered} = req.body
+
+        const { duration, topicsCovered } = req.body
         const createdSession = await Session.create({
             duration,
             topicsCovered,
@@ -13,23 +13,23 @@ async function createSession(req, res){
         res.status(201).json(createdSession)
 
     } catch (error) {
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
 
     }
 }
 
-async function getAllSessions(req, res){
+async function getAllSessions(req, res) {
     try {
         const allSessions = await Session.find()
         res.status(200).json(allSessions)
-        
+
     } catch (error) {
-        res.status(500).json({message: err.message})
+        res.status(500).json({ message: err.message })
 
     }
 }
 
 module.exports = {
     createSession,
-    getAllSessions 
+    getAllSessions
 }

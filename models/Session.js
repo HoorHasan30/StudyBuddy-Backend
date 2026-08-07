@@ -1,16 +1,17 @@
-const {model, Schema} = require('mongoose')
+const { model, Schema } = require('mongoose')
+
 const sessionSchema = new Schema({
-    duration:{
+    duration: {
         type: Number,
         required: true
     },
-    topicsCovered:{
+    topicsCovered: {
         type: String,
         trim: true
     },
-    owner:{
+    owner: {
         type: Schema.Types.ObjectId,
-        ref:'User'
+        ref: 'User'
     }
 })
 
