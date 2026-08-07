@@ -20,6 +20,8 @@ async function createSession(req, res){
 
 async function getAllSessions(req, res){
     try {
+        const allSessions = await Session.find()
+        res.status(200).json(allSessions)
         
     } catch (error) {
         res.status(500).json({message: err.message})
