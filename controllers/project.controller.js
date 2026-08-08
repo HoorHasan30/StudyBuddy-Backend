@@ -74,6 +74,7 @@ async function getProjectsDeadline(req, res) {
     }
 }
 
+// Update project details
 async function updateProjectDetails(req, res) {
     try {
         const foundProject = await Project.findById(req.params.id)
@@ -100,7 +101,7 @@ async function updateProjectDetails(req, res) {
     }
 }
 
-//  CHECK
+//  Add collaberator
 async function addCollaberator(req, res) {
     try {
         const { username } = req.body
@@ -143,6 +144,7 @@ async function addCollaberator(req, res) {
     }
 }
 
+// Remove collaberator
 async function removeCollaberator(req, res) {
     try {
         const { username } = req.body
@@ -185,6 +187,7 @@ async function removeCollaberator(req, res) {
     }
 }
 
+// Delete project
 async function deleteProject(req, res){
     try{
         const foundProject = await Project.findById(req.params.id)
