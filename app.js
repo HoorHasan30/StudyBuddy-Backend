@@ -10,6 +10,9 @@ const authRoutes = require('./routes/auth.routes')
 const projectRoutes = require('./routes/project.routes')
 
 
+const sessionRoutes = require('./routes/session.routes')
+const timetableRoutes = require('./routes/timeTable.routes')
+const courseRoutes = require('./routes/course.routes')
 // Middleware
 app.use(
     cors({
@@ -27,5 +30,8 @@ app.use('/projects', projectRoutes)
 
 
 
+app.use('/sessions', sessionRoutes)
+app.use('/timetable', timetableRoutes)
+app.use('/courses', courseRoutes)
 
 module.exports = app
