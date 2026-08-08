@@ -20,7 +20,7 @@ async function createSession(req, res) {
 
 async function getAllSessions(req, res) {
     try {
-        const allSessions = await Session.find({owner: req.user._id})
+        const allSessions = await Session.find({owner:req.user._id})
         res.status(200).json(allSessions)
 
     } catch (error) {
