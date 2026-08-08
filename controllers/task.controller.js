@@ -17,7 +17,8 @@ async function getTasksDeadline(req, res) {
     }
 }
 
-// Create Project Task
+// PROJECT
+// Create Task
 async function createProjectTask(req, res) {
     try {
         const { title, deadline, priority, status } = req.body
@@ -53,19 +54,34 @@ async function createProjectTask(req, res) {
     }
 }
 
-// Get project task details
-async function getAllProjectTasks(){
-    try{
+// Get tasks
+async function getAllProjectTasks() {
+    try {
         const foundProject = await Project.findById(req.params.id).select('tasks')
         res.status(200).json(foundProject)
     }
-    catch(err){
-         return res.status(500).json({ message: err.message })
+    catch (err) {
+        return res.status(500).json({ message: err.message })
     }
 }
 
+// Get task details
+async function getProjectTaskDetails() {
+    try {
+        const foundTask = await Task.findById(req.params.taskId)
+        res.status(200).json(foundTask)
+    }
+    catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+}
+
+
+// COURSE
+
 module.exports = {
     getTasksDeadline,
-    createProjectTask
-
+    createProjectTask,
+    getAllProjectTasks,
+    getProjectTaskDetails
 }
