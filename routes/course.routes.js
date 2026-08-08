@@ -6,4 +6,5 @@ router.post('/', verifyToken, courseController.createCourse)
 router.get('/', verifyToken, courseController.allCourses)
 router.get('/:courseId', verifyToken, courseController.getCourse)
 router.put('/:courseId', verifyToken, courseController.updateCourse)
+router.delete('/:courseId', verifyToken, courseController.deleteCourse)
 module.exports = router;

@@ -1,11 +1,11 @@
 const Course = require('../models/Course')
 
-async function createCourse(req, res){
+async function createCourse(req, res) {
 
     try {
-        const {title, description} = req.body
+        const { title, description } = req.body
         const createdCourse = await Course.create({
-            title, 
+            title,
             description,
             owner: req.user._id
         })
@@ -17,30 +17,40 @@ async function createCourse(req, res){
     }
 }
 
-async function allCourses(req, res){
+async function allCourses(req, res) {
     try {
         const getAllCourses = await Course.find()
-        res.status(200).json(getAllCourses)
         
+        if (!getAllCourses) {
+            return res.status(404).json({ message: 'no course found, add yours!' })
+            
+        }
+        res.status(200).json(getAllCourses)
+
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
 }
 
-async function getCourse(req, res){
+async function getCourse(req, res) {
     try {
         const getOneCourse = await Course.findById(req.params.courseId)
-        res.status(200).json(getOneCourse)
         
+        if (!getOneCourse) {
+            return res.status(404).json({ message: 'no course found, add yours!' })
+        }
+
+        res.status(200).json(getOneCourse)
+
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
 }
 
-async function updateCourse(req, res){
+async function updateCourse(req, res) {
     try {
-        const {title, description} = req.body
-        const updatedCourse = await Course.findByIdAndUpdate(req.params.courseId, {title, description}, {new: true})
+        const { title, description } = req.body
+        const updatedCourse = await Course.findByIdAndUpdate(req.params.courseId, { title, description }, { new: true })
         res.status(200).json(updatedCourse)
 
     } catch (error) {
@@ -48,7 +58,20 @@ async function updateCourse(req, res){
     }
 }
 
-async function deleteCourse(req, res){}
+async function deleteCourse(req, res) {
+    try {
+        const deletedCourse = await Course.findByIdAndDelete(req.params.courseId)
+        
+        if (!deletedCourse) {
+            return res.status(404).json({ message: 'no course found, add yours!' })
+        }
+        
+        res.status(204).json(deletedCourse)
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+
+    }
+}
 
 module.exports = {
     createCourse,
