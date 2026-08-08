@@ -35,7 +35,24 @@ async function getMyProjects(req, res){
     }
 }
 
+async function getOneProject(req, res){
+    try{
+        const foundProject = await Project.findById(req.params.id)
+
+        if(!foundProject){
+            return res.status(404).json({message: 'No Project matches the id provided'})
+        }
+
+        res.status(200).json(foundProject)
+
+    }
+    catch(err){
+        return res.status(500).json({message: err.message})
+    }
+}
+
 module.exports = {
     createProject,
-    getMyProjects
+    getMyProjects,
+    getOneProject
 }

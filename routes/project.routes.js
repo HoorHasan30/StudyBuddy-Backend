@@ -6,5 +6,6 @@ const validateObjectId = require('../middleware/validateObjectId')
 
 router.post('/', verifyToken, projectController.createProject)
 router.get('/', verifyToken, projectController.getMyProjects)
+router.get('/:id', verifyToken, validateObjectId, projectController.getOneProject)
 
 module.exports = router;
