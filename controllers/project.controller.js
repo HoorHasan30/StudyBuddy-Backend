@@ -35,6 +35,7 @@ async function getMyProjects(req, res){
     }
 }
 
+// Get one project
 async function getOneProject(req, res){
     try{
         const foundProject = await Project.findById(req.params.id)
@@ -44,7 +45,17 @@ async function getOneProject(req, res){
         }
 
         res.status(200).json(foundProject)
+    }
+    catch(err){
+        return res.status(500).json({message: err.message})
+    }
+}
 
+// Get projects deadlines
+async function getProjectsDeadline(req, res) {
+    try{
+        const myProjectsDeadline = await Project.find({owner: req.user._id}).select('deadline')
+        res.status(200).json(myProjectsDeadline)
     }
     catch(err){
         return res.status(500).json({message: err.message})
@@ -54,5 +65,6 @@ async function getOneProject(req, res){
 module.exports = {
     createProject,
     getMyProjects,
-    getOneProject
+    getOneProject,
+    getProjectsDeadline
 }
