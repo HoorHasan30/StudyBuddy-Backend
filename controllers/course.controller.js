@@ -19,12 +19,7 @@ async function createCourse(req, res) {
 
 async function allCourses(req, res) {
     try {
-        const getAllCourses = await Course.find()
-        
-        if (!getAllCourses) {
-            return res.status(404).json({ message: 'no course found, add yours!' })
-            
-        }
+        const getAllCourses = await Course.find({owner: req.user._id})
         res.status(200).json(getAllCourses)
 
     } catch (error) {
