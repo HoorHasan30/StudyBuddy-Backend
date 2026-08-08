@@ -76,6 +76,7 @@ async function getProjectTaskDetails(req, res) {
     }
 }
 
+// update task details
 async function updateProjectTaskById(req, res) {
     try {
         const foundTask = await Task.findById(req.params.taskId)
@@ -103,6 +104,7 @@ async function updateProjectTaskById(req, res) {
     }
 }
 
+// delete task details
 async function deleteProjectTaskById(req, res) {
     try {
         const foundTask = await Task.findById(req.params.taskId)
@@ -121,8 +123,8 @@ async function deleteProjectTaskById(req, res) {
     }
 }
 
-
 // COURSE
+
 
 module.exports = {
     getTasksDeadline,
