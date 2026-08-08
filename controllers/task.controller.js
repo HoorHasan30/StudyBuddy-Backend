@@ -55,7 +55,7 @@ async function createProjectTask(req, res) {
 }
 
 // Get tasks
-async function getAllProjectTasks() {
+async function getAllProjectTasks(req, res) {
     try {
         const foundProject = await Project.findById(req.params.id).select('tasks')
         res.status(200).json(foundProject)
@@ -66,7 +66,7 @@ async function getAllProjectTasks() {
 }
 
 // Get task details
-async function getProjectTaskDetails() {
+async function getProjectTaskDetails(req, res) {
     try {
         const foundTask = await Task.findById(req.params.taskId)
         res.status(200).json(foundTask)
