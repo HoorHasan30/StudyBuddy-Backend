@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const projectSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: True
+        required: true
     },
     description: {
         type: String
@@ -27,4 +27,4 @@ const projectSchema = new mongoose.Schema({
 
 const Project = mongoose.model('Project', projectSchema)
 
-module.exporte = Project
+module.exports = Project
