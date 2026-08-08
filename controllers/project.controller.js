@@ -1,4 +1,5 @@
 const Project = require('../models/Project')
+const User = require('../models/User')
 
 // Create
 async function createProject(req, res) {
@@ -27,7 +28,13 @@ async function createProject(req, res) {
 // Get my all projects
 async function getMyProjects(req, res) {
     try {
-        const myProjects = await Project.find({ owner: req.user._id })
+        const myProjects = await Project.find({
+            $or: [
+                { owner: req.user._id },
+                { collaberators: req.user._id }
+            ]
+        })
+            
         res.status(200).json(myProjects)
     }
     catch (err) {
@@ -87,6 +94,25 @@ async function updateProjectDetails(req, res) {
         res.status(500).json({ message: err.message })
     }
 }
+
+//  CHECK
+// async function addCollaberator(req, res) { 
+//     try {
+//         const { username } = req.body
+//         const newCollaberator = await User.find({username}).select('_id')
+
+//         const foundProject = await Project.findById(req.params.id)
+//         foundProject.collaberators.push(newCollaberator)
+//         foundProject.save()
+//     }
+//     catch (err) {
+//         if (err.name === 'ValidationError') {
+//             return res.status(400).json({ message: err.message })
+//         }
+
+//         res.status(500).json({ message: err.message })
+//     }
+// }
 
 module.exports = {
     createProject,
