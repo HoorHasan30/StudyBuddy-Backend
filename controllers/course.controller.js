@@ -34,11 +34,19 @@ async function getCourse(req, res){
         
     } catch (error) {
         res.status(500).json({ message: error.message })
-        
     }
 }
 
-async function updateCourse(req, res){}
+async function updateCourse(req, res){
+    try {
+        const {title, description} = req.body
+        const updatedCourse = await Course.findByIdAndUpdate(req.params.courseId, {title, description}, {new: true})
+        res.status(200).json(updatedCourse)
+
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
 
 async function deleteCourse(req, res){}
 
