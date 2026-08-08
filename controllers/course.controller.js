@@ -27,7 +27,16 @@ async function allCourses(req, res){
     }
 }
 
-async function getOneCourse(req, res){}
+async function getCourse(req, res){
+    try {
+        const getOneCourse = await Course.findById(req.params.courseId)
+        res.status(200).json(getOneCourse)
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+        
+    }
+}
 
 async function updateCourse(req, res){}
 
@@ -36,7 +45,7 @@ async function deleteCourse(req, res){}
 module.exports = {
     createCourse,
     allCourses,
-    getOneCourse,
+    getCourse,
     updateCourse,
     deleteCourse
 }
