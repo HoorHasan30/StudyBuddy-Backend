@@ -34,7 +34,7 @@ async function getMyProjects(req, res) {
                 { collaberators: req.user._id }
             ]
         })
-            
+
         res.status(200).json(myProjects)
     }
     catch (err) {
@@ -61,12 +61,12 @@ async function getOneProject(req, res) {
 // Get projects deadlines
 async function getProjectsDeadline(req, res) {
     try {
-        const myProjectsDeadline = await Project.find({ 
+        const myProjectsDeadline = await Project.find({
             $or: [
                 { owner: req.user._id },
                 { collaberators: req.user._id }
             ]
-         }).select('deadline')
+        }).select('deadline')
         res.status(200).json(myProjectsDeadline)
     }
     catch (err) {
@@ -101,9 +101,14 @@ async function updateProjectDetails(req, res) {
 }
 
 //  CHECK
-async function addCollaberator(req, res) { 
+async function addCollaberator(req, res) {
     try {
         const { username } = req.body
+
+        if (!username) {
+            return res.status(404).json({ message: 'User is required' })
+        }
+
         const newCollaberator = await User.findOne({ username }).select('_id')
 
         if (!newCollaberator) {
@@ -117,7 +122,7 @@ async function addCollaberator(req, res) {
         }
 
         const alreadyAdded = foundProject.collaberators.some(
-            id => id.toString() === user._id.toString()
+            id => id.toString() === newCollaberator._id.toString()
         )
 
         if (alreadyAdded) {
@@ -125,9 +130,51 @@ async function addCollaberator(req, res) {
         }
 
         foundProject.collaberators.push(newCollaberator)
-        foundProject.save()
+        await foundProject.save()
 
         res.status(200).json(foundProject)
+    }
+    catch (err) {
+        if (err.name === 'ValidationError') {
+            return res.status(400).json({ message: err.message })
+        }
+
+        res.status(500).json({ message: err.message })
+    }
+}
+
+async function removeCollaberator(req, res) {
+    try {
+        const { username } = req.body
+
+        if (!username) {
+            return res.status(404).json({ message: 'User is required' })
+        }
+
+        const collaberator = await User.findOne({ username }).select('_id')
+
+        if (!collaberator) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+
+        const foundProject = await Project.findById(req.params.id)
+
+        if (foundProject.owner != req.user._id) {
+            return res.status(403).json({ message: 'You are not authorized to remove collaberators to this project' })
+        }
+
+        const allCollaberatorsExceptUser = foundProject.collaberators.length
+
+        foundProject.collaberators = foundProject.collaberators.filter(
+            id => id.toString() !== collaberator._id.toString()
+        )
+
+        if (foundProject.collaberators.length === allCollaberatorsExceptUser) {
+            return res.status(404).json({ message: 'User is not a collaborator on this project' })
+        }
+
+        await foundProject.save()
+        return res.status(200).json(foundProject)
     }
     catch (err) {
         if (err.name === 'ValidationError') {
@@ -144,5 +191,6 @@ module.exports = {
     getOneProject,
     getProjectsDeadline,
     updateProjectDetails,
-    addCollaberator
+    addCollaberator,
+    removeCollaberator
 }
