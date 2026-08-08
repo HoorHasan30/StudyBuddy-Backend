@@ -103,7 +103,7 @@ async function updateProjectTaskById(req, res) {
     }
 }
 
-async function updateProjectTaskById(req, res) {
+async function deleteProjectTaskById(req, res) {
     try {
         const foundTask = await Task.findById(req.params.taskId)
 
@@ -129,5 +129,6 @@ module.exports = {
     createProjectTask,
     getAllProjectTasks,
     getProjectTaskDetails,
-    updateProjectTaskById
+    updateProjectTaskById,
+    deleteProjectTaskById
 }
