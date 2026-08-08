@@ -15,5 +15,6 @@ router.put('/:id/add-collaberator', verifyToken, validateObjectId, projectContro
 router.put('/:id/remove-collaberator', verifyToken, validateObjectId, projectController.removeCollaberator)
 
 
+router.delete('/:id', verifyToken, validateObjectId, projectController.deleteProject)
 
 module.exports = router;

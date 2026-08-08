@@ -185,6 +185,25 @@ async function removeCollaberator(req, res) {
     }
 }
 
+async function deleteProject(req, res){
+    try{
+        const foundProject = await Project.findById(req.params.id)
+        
+        if (foundProject.owner != req.user._id) {
+            return res.status(403).json({ message: 'You are not authorized to delete this project' })
+        }
+
+       const deletedProject = await Project.findByIdAndDelete(req.params.id)
+
+       res.status(200).json({message: 'Project Deleted Successfully'})
+
+    }
+    catch(err){
+        res.status(500).json({ message: err.message })
+    }
+}
+
+
 module.exports = {
     createProject,
     getMyProjects,
@@ -192,5 +211,6 @@ module.exports = {
     getProjectsDeadline,
     updateProjectDetails,
     addCollaberator,
-    removeCollaberator
+    removeCollaberator,
+    deleteProject
 }
