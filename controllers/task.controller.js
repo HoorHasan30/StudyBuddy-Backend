@@ -53,6 +53,16 @@ async function createProjectTask(req, res) {
     }
 }
 
+// Get project task details
+async function getAllProjectTasks(){
+    try{
+        const foundProject = await Project.findById(req.params.id).select('tasks')
+        res.status(200).json(foundProject)
+    }
+    catch(err){
+         return res.status(500).json({ message: err.message })
+    }
+}
 
 module.exports = {
     getTasksDeadline,
