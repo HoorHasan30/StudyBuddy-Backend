@@ -10,5 +10,6 @@ router.get('/deadlines', verifyToken, projectController.getProjectsDeadline)
 
 
 router.get('/:id', verifyToken, validateObjectId, projectController.getOneProject)
+router.put('/:id/edit', verifyToken, validateObjectId, projectController.updateProjectDetails)
 
 module.exports = router;
