@@ -17,7 +17,15 @@ async function createCourse(req, res){
     }
 }
 
-async function allCourses(req, res){}
+async function allCourses(req, res){
+    try {
+        const getAllCourses = await Course.find()
+        res.status(200).json(getAllCourses)
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
 
 async function getOneCourse(req, res){}
 

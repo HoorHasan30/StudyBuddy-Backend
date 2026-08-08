@@ -3,5 +3,6 @@ const courseController = require('../controllers/course.controller');
 const verifyToken = require("../middleware/verifyToken");
 
 router.post('/', verifyToken, courseController.createCourse)
+router.get('/', verifyToken, courseController.allCourses)
 
 module.exports = router;
