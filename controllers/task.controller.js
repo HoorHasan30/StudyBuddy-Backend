@@ -76,17 +76,17 @@ async function getProjectTaskDetails(req, res) {
     }
 }
 
-async function updateProjectTaskById() {
+async function updateProjectTaskById(req, res) {
     try {
         const foundTask = await Task.findById(req.params.taskId)
-        
+
 
         if (foundTask.owner != req.user._id) {
             return res.status(403).json({ message: 'You are not authorized to delete this task' })
         }
 
         const { title, deadline, priority, status } = req.body
-        
+
         foundTask.title = title
         foundTask.deadline = deadline
         foundTask.priority = priority
@@ -96,9 +96,31 @@ async function updateProjectTaskById() {
         res.status(200).json(foundTask)
     }
     catch (err) {
+        if (err.name === 'ValidationError') {
+            return res.status(400).json({ message: err.message })
+        }
         return res.status(500).json({ message: err.message })
     }
 }
+
+async function updateProjectTaskById(req, res) {
+    try {
+        const foundTask = await Task.findById(req.params.taskId)
+
+
+        if (foundTask.owner != req.user._id) {
+            return res.status(403).json({ message: 'You are not authorized to delete this task' })
+        }
+
+        const deletedTask = await Task.findByIdAndDelete(req.params.taskId)
+
+        res.status(200).json({message: 'Task Deleted Successfully'})
+    }
+    catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+}
+
 
 // COURSE
 
@@ -106,5 +128,6 @@ module.exports = {
     getTasksDeadline,
     createProjectTask,
     getAllProjectTasks,
-    getProjectTaskDetails
+    getProjectTaskDetails,
+    updateProjectTaskById
 }
