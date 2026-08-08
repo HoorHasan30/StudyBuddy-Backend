@@ -101,28 +101,48 @@ async function updateProjectDetails(req, res) {
 }
 
 //  CHECK
-// async function addCollaberator(req, res) { 
-//     try {
-//         const { username } = req.body
-//         const newCollaberator = await User.find({username}).select('_id')
+async function addCollaberator(req, res) { 
+    try {
+        const { username } = req.body
+        const newCollaberator = await User.findOne({ username }).select('_id')
 
-//         const foundProject = await Project.findById(req.params.id)
-//         foundProject.collaberators.push(newCollaberator)
-//         foundProject.save()
-//     }
-//     catch (err) {
-//         if (err.name === 'ValidationError') {
-//             return res.status(400).json({ message: err.message })
-//         }
+        if (!newCollaberator) {
+            return res.status(404).json({ message: 'User not found' })
+        }
 
-//         res.status(500).json({ message: err.message })
-//     }
-// }
+        const foundProject = await Project.findById(req.params.id)
+
+        if (foundProject.owner != req.user._id) {
+            return res.status(403).json({ message: 'You are not authorized to add collaberators to this project' })
+        }
+
+        const alreadyAdded = foundProject.collaberators.some(
+            id => id.toString() === user._id.toString()
+        )
+
+        if (alreadyAdded) {
+            return res.status(400).json({ message: 'User already added' })
+        }
+
+        foundProject.collaberators.push(newCollaberator)
+        foundProject.save()
+
+        res.status(200).json(foundProject)
+    }
+    catch (err) {
+        if (err.name === 'ValidationError') {
+            return res.status(400).json({ message: err.message })
+        }
+
+        res.status(500).json({ message: err.message })
+    }
+}
 
 module.exports = {
     createProject,
     getMyProjects,
     getOneProject,
     getProjectsDeadline,
-    updateProjectDetails
+    updateProjectDetails,
+    addCollaberator
 }
