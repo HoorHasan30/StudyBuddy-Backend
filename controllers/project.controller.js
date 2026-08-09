@@ -100,7 +100,6 @@ async function updateProjectDetails(req, res) {
 async function deleteProject(req, res) {
     try {
         const foundProject = req.foundProject
-
         const deletedProject = await Project.findByIdAndDelete(req.params.id)
 
         res.status(200).json({ message: 'Project Deleted Successfully' })
@@ -196,14 +195,6 @@ async function createProjectTask(req, res) {
         const { title, deadline, priority, status } = req.body
 
         const foundProject = req.foundProject
-
-        const isCollaborator = foundProject.collaberators.some(
-            id => id.toString() === req.user._id.toString()
-        )
-
-        if (!isCollaborator) {
-            return res.status(403).json({ message: 'You are not authorized to add a task to this project' })
-        }
 
         const createdTask = await Task.create({
             title,
@@ -329,5 +320,4 @@ module.exports = {
     updateProjectTaskById,
     updateProjectTaskStatus,
     deleteProjectTaskById
-
 }
