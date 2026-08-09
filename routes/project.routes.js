@@ -18,8 +18,8 @@ router.delete('/:id', verifyToken, validateObjectId, projectController.deletePro
 router.put('/:id/add-collaberator', verifyToken, validateObjectId, projectController.addCollaberator)
 router.put('/:id/remove-collaberator', verifyToken, validateObjectId, projectController.removeCollaberator)
 
-router.post('/:id/tasks', verifyToken, projectController.createProjectTask)
-router.get('/:id/tasks', verifyToken, projectController.getAllProjectTasks)
+router.post('/:id/tasks', verifyToken, validateObjectId, projectController.createProjectTask)
+router.get('/:id/tasks', verifyToken, validateObjectId, projectController.getAllProjectTasks)
 router.get('/:id/tasks/:taskId', verifyToken, validateObjectId, projectController.getProjectTaskDetails)
 router.put('/:id/tasks/:taskId', verifyToken, validateObjectId, projectController.updateProjectTaskById)
 router.delete('/:id/tasks/:taskId', verifyToken, validateObjectId, projectController.deleteProjectTaskById)

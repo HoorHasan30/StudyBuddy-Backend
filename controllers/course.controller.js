@@ -36,11 +36,6 @@ async function allCourses(req, res) {
 async function getCourse(req, res) {
     try {
         const getOneCourse = await Course.findById(req.params.courseId)
-
-        if (!getOneCourse) {
-            return res.status(404).json({ message: 'no course found, add yours!' })
-        }
-
         res.status(200).json(getOneCourse)
 
     } catch (error) {
@@ -62,8 +57,6 @@ async function updateCourse(req, res) {
         foundCourse.description = description
         await foundCourse.save()
 
-        // const updatedCourse = await Course.findByIdAndUpdate(req.params.courseId, { title, description }, { new: true })
-        // res.status(200).json(updatedCourse)
         res.status(200).json(foundCourse)
 
     } catch (error) {
@@ -81,10 +74,6 @@ async function deleteCourse(req, res) {
         }
 
         const deletedCourse = await Course.findByIdAndDelete(req.params.courseId)
-
-        if (!deletedCourse) {
-            return res.status(404).json({ message: 'no course found, add yours!' })
-        }
 
         res.status(204).json(deletedCourse)
 
