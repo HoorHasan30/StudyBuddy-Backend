@@ -30,7 +30,7 @@ async function getTableImg(req, res) {
 
     } catch (error) {
         if (err.name === 'ValidationError') {
-            return res.status(400).json({ message: err.message })
+            return res.status(400).json({ message: error.message })
         }
         
         res.status(500).json({ message: error.message })
@@ -43,7 +43,7 @@ async function deleteTableImg(req, res) {
     try {
         const deletedTimeTable = await TimeTable.findOneAndDelete({owner: req.user._id})
         
-        if(!deleteTableImg){
+        if(!deletedTimeTable){
             return res.status(404).json({ message: 'no timeTable found, add yours!' })
 
         }
