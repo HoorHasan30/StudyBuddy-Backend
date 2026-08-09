@@ -133,14 +133,14 @@ async function addCollaberator(req, res) {
         const foundProject = req.foundProject
 
         const alreadyAdded = foundProject.collaberators.some(
-            id => id.toString() === newCollaberator._id.toString()
+            collaborator => collaborator._id.toString() === newCollaberator._id.toString()
         )
 
         if (alreadyAdded) {
             return res.status(400).json({ message: 'User already added' })
         }
 
-        foundProject.collaberators.push(newCollaberator)
+        foundProject.collaberators.push(newCollaberator._id)
         await foundProject.save()
 
         res.status(200).json(foundProject)
