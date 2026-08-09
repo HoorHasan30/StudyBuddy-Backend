@@ -276,7 +276,7 @@ async function updateProjectTaskById(req, res) {
 
 
         if (foundTask.owner != req.user._id) {
-            return res.status(403).json({ message: 'You are not authorized to delete this task' })
+            return res.status(403).json({ message: 'You are not authorized to update this task' })
         }
 
         const { title, deadline, priority, status } = req.body
