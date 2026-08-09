@@ -46,8 +46,8 @@ async function getMyProjects(req, res) {
 // Get one project
 async function getOneProject(req, res) {
     try {
-        const foundProject = await Project.findById(req.params.id)
-        
+        const foundProject = req.foundProject
+
         res.status(200).json(foundProject)
     }
     catch (err) {
@@ -64,6 +64,7 @@ async function getProjectsDeadline(req, res) {
                 { collaberators: req.user._id }
             ]
         }).select('deadline')
+
         res.status(200).json(myProjectsDeadline)
     }
     catch (err) {
@@ -74,11 +75,7 @@ async function getProjectsDeadline(req, res) {
 // Update project details
 async function updateProjectDetails(req, res) {
     try {
-        const foundProject = await Project.findById(req.params.id)
-
-        if (foundProject.owner != req.user._id) {
-            return res.status(403).json({ message: 'You are not authorized to update this project details' })
-        }
+        const foundProject = req.foundProject
 
         const { title, description, deadline } = req.body
 
@@ -100,20 +97,16 @@ async function updateProjectDetails(req, res) {
 
 
 // Delete project
-async function deleteProject(req, res){
-    try{
-        const foundProject = await Project.findById(req.params.id)
-        
-        if (foundProject.owner != req.user._id) {
-            return res.status(403).json({ message: 'You are not authorized to delete this project' })
-        }
+async function deleteProject(req, res) {
+    try {
+        const foundProject = req.foundProject
 
-       const deletedProject = await Project.findByIdAndDelete(req.params.id)
+        const deletedProject = await Project.findByIdAndDelete(req.params.id)
 
-       res.status(200).json({message: 'Project Deleted Successfully'})
+        res.status(200).json({ message: 'Project Deleted Successfully' })
 
     }
-    catch(err){
+    catch (err) {
         res.status(500).json({ message: err.message })
     }
 }
@@ -133,11 +126,7 @@ async function addCollaberator(req, res) {
             return res.status(404).json({ message: 'User not found' })
         }
 
-        const foundProject = await Project.findById(req.params.id)
-
-        if (foundProject.owner != req.user._id) {
-            return res.status(403).json({ message: 'You are not authorized to add collaberators to this project' })
-        }
+        const foundProject = req.foundProject
 
         const alreadyAdded = foundProject.collaberators.some(
             id => id.toString() === newCollaberator._id.toString()
@@ -164,6 +153,7 @@ async function addCollaberator(req, res) {
 // Remove collaberator
 async function removeCollaberator(req, res) {
     try {
+
         const { username } = req.body
 
         if (!username) {
@@ -176,11 +166,7 @@ async function removeCollaberator(req, res) {
             return res.status(404).json({ message: 'User not found' })
         }
 
-        const foundProject = await Project.findById(req.params.id)
-
-        if (foundProject.owner != req.user._id) {
-            return res.status(403).json({ message: 'You are not authorized to remove collaberators to this project' })
-        }
+        const foundProject = req.foundProject
 
         const allCollaberatorsExceptUser = foundProject.collaberators.length
 
@@ -209,14 +195,13 @@ async function createProjectTask(req, res) {
     try {
         const { title, deadline, priority, status } = req.body
 
-        const foundProject = await Project.findById(req.params.id)
+        const foundProject = req.foundProject
 
-        const isOwner = foundProject.owner.toString() === req.user._id.toString()
         const isCollaborator = foundProject.collaberators.some(
             id => id.toString() === req.user._id.toString()
         )
 
-        if (!isOwner && !isCollaborator) {
+        if (!isCollaborator) {
             return res.status(403).json({ message: 'You are not authorized to add a task to this project' })
         }
 
@@ -246,8 +231,8 @@ async function createProjectTask(req, res) {
 // Get tasks
 async function getAllProjectTasks(req, res) {
     try {
-        const foundProject = await Project.findById(req.params.id).select('tasks')
-        res.status(200).json(foundProject)
+        const foundProject = req.foundProject
+        res.status(200).json(foundProject.tasks)
     }
     catch (err) {
         return res.status(500).json({ message: err.message })
@@ -257,7 +242,7 @@ async function getAllProjectTasks(req, res) {
 // Get task details
 async function getProjectTaskDetails(req, res) {
     try {
-        const foundTask = await Task.findById(req.params.taskId)
+        const foundTask = req.foundTask
         res.status(200).json(foundTask)
     }
     catch (err) {
@@ -268,12 +253,7 @@ async function getProjectTaskDetails(req, res) {
 // update task details
 async function updateProjectTaskById(req, res) {
     try {
-        const foundTask = await Task.findById(req.params.taskId)
-
-
-        if (foundTask.owner != req.user._id) {
-            return res.status(403).json({ message: 'You are not authorized to update this task' })
-        }
+        const foundTask = req.foundTask
 
         const { title, deadline, priority, status } = req.body
 
@@ -295,12 +275,7 @@ async function updateProjectTaskById(req, res) {
 // update task status
 async function updateProjectTaskStatus(req, res) {
     try {
-        const foundTask = await Task.findById(req.params.taskId)
-
-
-        if (foundTask.owner != req.user._id) {
-            return res.status(403).json({ message: 'You are not authorized to update this task' })
-        }
+        const foundTask = req.foundTask
 
         const { status } = req.body
 
@@ -320,30 +295,18 @@ async function updateProjectTaskStatus(req, res) {
 // delete task details
 async function deleteProjectTaskById(req, res) {
     try {
-        const foundTask = await Task.findById(req.params.taskId)
-       
-        if (foundTask.owner != req.user._id) {
-            return res.status(403).json({ message: 'You are not authorized to delete this task' })
-        }
+        const foundTask = req.foundTask
 
-        const foundProject = await Project.findById(req.params.id)
-
-        const isOwner = foundTask.owner.toString() === req.user._id.toString()
-        const isProjectOwner = foundProject.owner.toString() === req.user._id.toString()
-
-        if (!isOwner && !isProjectOwner) {
-            return res.status(403).json({ message: 'You are not authorized to delete this task' })
-        }
+        const foundProject = req.foundProject
 
         foundProject.tasks = foundProject.tasks.filter(
             id => id.toString() !== foundTask._id.toString()
         )
-        
+
         await foundProject.save()
         const deletedTask = await Task.findByIdAndDelete(req.params.taskId)
 
-    
-        res.status(200).json({message: 'Task Deleted Successfully'})
+        res.status(200).json({ message: 'Task Deleted Successfully' })
     }
     catch (err) {
         return res.status(500).json({ message: err.message })
