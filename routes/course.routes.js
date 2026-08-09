@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const courseController = require('../controllers/course.controller');
 const verifyToken = require("../middleware/verifyToken");
-const validateObjectId = require()
+const validateObjectId = require('../middleware/validateObjectId')
 
 router.post('/', verifyToken, courseController.createCourse)
 router.get('/', verifyToken, courseController.allCourses)

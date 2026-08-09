@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 // TO DO: Check Prioraty 
 
-const taskSchema = new mongoose({
+const taskSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true
