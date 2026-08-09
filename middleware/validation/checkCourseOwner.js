@@ -2,7 +2,7 @@ const Course = require('../../models/Course')
 
 async function checkCourseOwner(req, res, next) {
 
-    const foundCourse = await Course.findById(req.params.courseId)
+    const foundCourse = await Course.findById(req.params.courseId).populate('tasks')
 
     if (foundCourse.owner != req.user._id) {
         return res.status(403).json({ message: 'You are not authorized to do this action' })

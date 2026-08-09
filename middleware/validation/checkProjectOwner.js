@@ -2,7 +2,7 @@ const Project = require('../../models/Project')
 
 async function checkProjectOwner(req, res, next) {
 
-    const foundProject = await Project.findById(req.params.id)
+    const foundProject = await Project.findById(req.params.id).populate('tasks')
 
     const isOwner = foundProject.owner.toString() === req.user._id.toString()
     
