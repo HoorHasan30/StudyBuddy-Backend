@@ -1,6 +1,6 @@
 const Task = require('../../models/Task')
 
-async function checkProjectOwner(req, res, next) {
+async function checkTaskOwner(req, res, next) {
 
     const foundTask = await Task.findById(req.params.taskId)
 
@@ -12,4 +12,4 @@ async function checkProjectOwner(req, res, next) {
     next()
 }
 
-module.exports = checkProjectOwner
+module.exports = checkTaskOwner

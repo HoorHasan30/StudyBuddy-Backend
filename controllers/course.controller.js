@@ -35,7 +35,7 @@ async function allCourses(req, res) {
 
 async function getCourse(req, res) {
     try {
-        const getOneCourse = await Course.findById(req.params.courseId)
+        const getOneCourse = req.foundCourse
         res.status(200).json(getOneCourse)
 
     } catch (error) {
@@ -46,11 +46,7 @@ async function getCourse(req, res) {
 async function updateCourse(req, res) {
     try {
 
-        const foundCourse = await Course.findById(req.params.courseId)
-
-        if (foundCourse.owner != req.user._id) {
-            return res.status(403).json({ message: 'You are not authorized to update this course details' })
-        }
+        const foundCourse = req.foundCourse
 
         const { title, description } = req.body
         foundCourse.title = title
@@ -67,11 +63,7 @@ async function updateCourse(req, res) {
 async function deleteCourse(req, res) {
     try {
 
-        const foundCourse = await Course.findById(req.params.courseId)
-
-        if (foundCourse.owner != req.user._id) {
-            return res.status(403).json({ message: 'You are not authorized to update this course details' })
-        }
+        const foundCourse = req.foundCourse
 
         const deletedCourse = await Course.findByIdAndDelete(req.params.courseId)
 
@@ -89,11 +81,7 @@ async function createCourseTask(req, res) {
     try {
         const { title, deadline, priority, status } = req.body
 
-        const foundCourse = await Course.findById(req.params.courseId)
-
-        if(!foundCourse.owner.toString() !== req.user._id.toString()) {
-            return res.status(403).json({ message: 'You are not authorized to add a task to this course' })
-        }
+        const foundCourse = req.foundCourse
 
         const createdTask = await Task.create({
             title,
@@ -121,8 +109,8 @@ async function createCourseTask(req, res) {
 // Get tasks
 async function getAllCourseTasks(req, res) {
     try {
-        const foundCourse = await Course.findById(req.params.courseId).select('tasks')
-        res.status(200).json(foundCourse)
+        const foundCourse = req.foundCourse
+        res.status(200).json(foundCourse.tasks)
     }
     catch (err) {
         return res.status(500).json({ message: err.message })
@@ -132,7 +120,7 @@ async function getAllCourseTasks(req, res) {
 // Get task details
 async function getCourseTaskDetails(req, res) {
     try {
-        const foundTask = await Task.findById(req.params.taskId)
+        const foundTask = req.foundTask
         res.status(200).json(foundTask)
     }
     catch (err) {
@@ -143,12 +131,7 @@ async function getCourseTaskDetails(req, res) {
 // update task details
 async function updateCourseTaskById(req, res) {
     try {
-        const foundTask = await Task.findById(req.params.taskId)
-
-
-        if (foundTask.owner != req.user._id) {
-            return res.status(403).json({ message: 'You are not authorized to update this task' })
-        }
+        const foundTask = req.foundTask
 
         const { title, deadline, priority, status } = req.body
 
@@ -170,12 +153,7 @@ async function updateCourseTaskById(req, res) {
 // update task status
 async function updateCourseTaskStatus(req, res) {
     try {
-        const foundTask = await Task.findById(req.params.taskId)
-
-
-        if (foundTask.owner != req.user._id) {
-            return res.status(403).json({ message: 'You are not authorized to update this task' })
-        }
+        const foundTask = req.foundTask
 
         const { status } = req.body
 
@@ -195,17 +173,9 @@ async function updateCourseTaskStatus(req, res) {
 // delete task details
 async function deleteCourseTaskById(req, res) {
     try {
-        const foundTask = await Task.findById(req.params.taskId)
-       
-        if (foundTask.owner != req.user._id) {
-            return res.status(403).json({ message: 'You are not authorized to delete this task' })
-        }
+        const foundTask = req.foundTask
 
-        const foundCourse = await Course.findById(req.params.courseId)
-
-        if (foundTask.owner.toString() !== req.user._id.toString()) {
-            return res.status(403).json({ message: 'You are not authorized to delete this task' })
-        }
+        const foundCourse = req.foundCourse
 
         foundCourse.tasks = foundCourse.tasks.filter(
             id => id.toString() !== foundTask._id.toString()
