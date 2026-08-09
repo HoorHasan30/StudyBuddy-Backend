@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 function validateObjectId(req, res, next) {
   
-const idsToCheck = ['id', 'courseId', 'taskId', 'projectId']
+const idsToCheck = ['id', 'courseId', 'taskId']
 
     for (const id of idsToCheck) {
         const param = req.params[id]
