@@ -27,7 +27,7 @@ async function allCourses(req, res) {
     try {
         const getAllCourses = await Course.find({ owner: req.user._id })
         res.status(200).json(getAllCourses)
-    } 
+    }
     catch (error) {
         res.status(500).json({ message: error.message })
     }
@@ -64,6 +64,10 @@ async function deleteCourse(req, res) {
     try {
 
         const foundCourse = req.foundCourse
+
+        if (foundCourse.tasks && foundCourse.tasks.length) {
+            await Task.deleteMany({ _id: { $in: foundCourse.tasks } })
+        }
 
         const deletedCourse = await Course.findByIdAndDelete(req.params.courseId)
 
@@ -180,12 +184,12 @@ async function deleteCourseTaskById(req, res) {
         foundCourse.tasks = foundCourse.tasks.filter(
             id => id.toString() !== foundTask._id.toString()
         )
-        
+
         await foundCourse.save()
         const deletedTask = await Task.findByIdAndDelete(req.params.taskId)
 
-    
-        res.status(200).json({message: 'Task Deleted Successfully'})
+
+        res.status(200).json({ message: 'Task Deleted Successfully' })
     }
     catch (err) {
         return res.status(500).json({ message: err.message })

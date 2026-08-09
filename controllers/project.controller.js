@@ -100,6 +100,11 @@ async function updateProjectDetails(req, res) {
 async function deleteProject(req, res) {
     try {
         const foundProject = req.foundProject
+
+        if (foundProject.tasks && foundProject.tasks.length) {
+            await Task.deleteMany({_id: { $in: foundProject.tasks }})
+        }
+
         const deletedProject = await Project.findByIdAndDelete(req.params.id)
 
         res.status(200).json({ message: 'Project Deleted Successfully' })
