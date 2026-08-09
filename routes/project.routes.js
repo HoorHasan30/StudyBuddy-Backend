@@ -22,6 +22,7 @@ router.post('/:id/tasks', verifyToken, validateObjectId, projectController.creat
 router.get('/:id/tasks', verifyToken, validateObjectId, projectController.getAllProjectTasks)
 router.get('/:id/tasks/:taskId', verifyToken, validateObjectId, projectController.getProjectTaskDetails)
 router.put('/:id/tasks/:taskId', verifyToken, validateObjectId, projectController.updateProjectTaskById)
+router.put('/:id/tasks/:taskId/status', verifyToken, validateObjectId, projectController.updateProjectTaskStatus)
 router.delete('/:id/tasks/:taskId', verifyToken, validateObjectId, projectController.deleteProjectTaskById)
 
 module.exports = router;

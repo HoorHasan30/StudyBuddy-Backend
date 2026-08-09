@@ -167,6 +167,31 @@ async function updateCourseTaskById(req, res) {
     }
 }
 
+// update task status
+async function updateCourseTaskStatus(req, res) {
+    try {
+        const foundTask = await Task.findById(req.params.taskId)
+
+
+        if (foundTask.owner != req.user._id) {
+            return res.status(403).json({ message: 'You are not authorized to update this task' })
+        }
+
+        const { status } = req.body
+
+        foundTask.status = status
+        await foundTask.save()
+
+        res.status(200).json(foundTask)
+    }
+    catch (err) {
+        if (err.name === 'ValidationError') {
+            return res.status(400).json({ message: err.message })
+        }
+        return res.status(500).json({ message: err.message })
+    }
+}
+
 // delete task details
 async function deleteCourseTaskById(req, res) {
     try {
@@ -207,5 +232,6 @@ module.exports = {
     getAllCourseTasks,
     getCourseTaskDetails,
     updateCourseTaskById,
+    updateCourseTaskStatus,
     deleteCourseTaskById
 }

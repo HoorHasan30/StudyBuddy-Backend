@@ -14,6 +14,7 @@ router.post('/:courseId/tasks', verifyToken, validateObjectId, courseController.
 router.get('/:courseId/tasks', verifyToken, validateObjectId, courseController.getAllCourseTasks)
 router.get('/:courseId/tasks/:taskId', verifyToken, validateObjectId, courseController.getCourseTaskDetails)
 router.put('/:courseId/tasks/:taskId', verifyToken, validateObjectId, courseController.updateCourseTaskById)
+router.put('/:courseId/tasks/:taskId/status', verifyToken, validateObjectId, courseController.updateCourseTaskStatus)
 router.delete('/:courseId/tasks/:taskId', verifyToken, validateObjectId, courseController.deleteCourseTaskById)
 
 module.exports = router;
