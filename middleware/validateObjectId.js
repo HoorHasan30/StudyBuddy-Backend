@@ -1,20 +1,15 @@
 const mongoose = require('mongoose')
 function validateObjectId(req, res, next) {
   
-  // Checking the project
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    return res.status(404).json({ message: "No object matching id provided" });
-  }
+const idsToCheck = ['id', 'courseId', 'taskId', 'projectId']
 
-  // checking the course
-  if (!mongoose.Types.ObjectId.isValid(req.params.courseId)) {
-    return res.status(404).json({ message: "No object matching id provided" });
-  }
+    for (const id of idsToCheck) {
+        const param = req.params[id]
 
-  // checking the task
-  if (!mongoose.Types.ObjectId.isValid(req.params.taskId)) {
-    return res.status(404).json({ message: "No object matching id provided" });
-  }
+        if (param && !mongoose.Types.ObjectId.isValid(param)) {
+            return res.status(404).json({ message: 'No object matching id provided' })
+        }
+    }
 
   next()
 }
