@@ -4,6 +4,7 @@ async function createSession(req, res) {
     try {
 
         const { duration, topicsCovered } = req.body
+
         const createdSession = await Session.create({
             duration,
             topicsCovered,
@@ -13,6 +14,10 @@ async function createSession(req, res) {
         res.status(201).json(createdSession)
 
     } catch (error) {
+        if (err.name === 'ValidationError') {
+            return res.status(400).json({ message: err.message })
+        }
+
         res.status(500).json({ message: error.message })
 
     }
@@ -25,7 +30,6 @@ async function getAllSessions(req, res) {
 
     } catch (error) {
         res.status(500).json({ message: error.message })
-
     }
 }
 
