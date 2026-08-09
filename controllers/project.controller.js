@@ -175,7 +175,7 @@ async function removeCollaberator(req, res) {
         const allCollaberatorsExceptUser = foundProject.collaberators.length
 
         foundProject.collaberators = foundProject.collaberators.filter(
-            id => id.toString() !== collaberator._id.toString()
+            collab => collab._id.toString() !== collaberator._id.toString()
         )
 
         if (foundProject.collaberators.length === allCollaberatorsExceptUser) {
