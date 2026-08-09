@@ -101,6 +101,10 @@ async function deleteProject(req, res) {
     try {
         const foundProject = req.foundProject
 
+        if (foundProject.tasks && foundProject.tasks.length) {
+            await Task.deleteMany({_id: { $in: foundProject.tasks }})
+        }
+
         const deletedProject = await Project.findByIdAndDelete(req.params.id)
 
         res.status(200).json({ message: 'Project Deleted Successfully' })
@@ -129,14 +133,14 @@ async function addCollaberator(req, res) {
         const foundProject = req.foundProject
 
         const alreadyAdded = foundProject.collaberators.some(
-            id => id.toString() === newCollaberator._id.toString()
+            collaborator => collaborator._id.toString() === newCollaberator._id.toString()
         )
 
         if (alreadyAdded) {
             return res.status(400).json({ message: 'User already added' })
         }
 
-        foundProject.collaberators.push(newCollaberator)
+        foundProject.collaberators.push(newCollaberator._id)
         await foundProject.save()
 
         res.status(200).json(foundProject)
@@ -171,7 +175,7 @@ async function removeCollaberator(req, res) {
         const allCollaberatorsExceptUser = foundProject.collaberators.length
 
         foundProject.collaberators = foundProject.collaberators.filter(
-            id => id.toString() !== collaberator._id.toString()
+            collab => collab._id.toString() !== collaberator._id.toString()
         )
 
         if (foundProject.collaberators.length === allCollaberatorsExceptUser) {
@@ -196,14 +200,6 @@ async function createProjectTask(req, res) {
         const { title, deadline, priority, status } = req.body
 
         const foundProject = req.foundProject
-
-        const isCollaborator = foundProject.collaberators.some(
-            id => id.toString() === req.user._id.toString()
-        )
-
-        if (!isCollaborator) {
-            return res.status(403).json({ message: 'You are not authorized to add a task to this project' })
-        }
 
         const createdTask = await Task.create({
             title,
@@ -329,5 +325,4 @@ module.exports = {
     updateProjectTaskById,
     updateProjectTaskStatus,
     deleteProjectTaskById
-
 }
