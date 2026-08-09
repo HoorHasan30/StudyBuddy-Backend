@@ -13,7 +13,7 @@ const sessionSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }
-})
+}, {timestamps: true})
 
 const Session = model('Session', sessionSchema)
 

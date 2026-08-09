@@ -9,7 +9,7 @@ const timeTableSchema = new Schema({
         ref: 'User'
     }
 
-})
+}, {timestamps: true})
 
 const TimeTable = model('TimeTable', timeTableSchema)
 
