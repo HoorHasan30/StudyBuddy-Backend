@@ -11,6 +11,7 @@ const projectRoutes = require('./routes/project.routes')
 const sessionRoutes = require('./routes/session.routes')
 const timetableRoutes = require('./routes/timeTable.routes')
 const courseRoutes = require('./routes/course.routes')
+const taskRoutes = require('./routes/task.routes')
 
 
 // Middleware
@@ -29,5 +30,6 @@ app.use('/projects', projectRoutes)
 app.use('/sessions', sessionRoutes)
 app.use('/timetable', timetableRoutes)
 app.use('/courses', courseRoutes)
+app.use('/tasks', taskRoutes)
 
 module.exports = app

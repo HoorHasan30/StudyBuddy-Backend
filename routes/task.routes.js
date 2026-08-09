@@ -5,6 +5,6 @@ const verifyToken = require("../middleware/verifyToken");
 const validateObjectId = require('../middleware/validateObjectId')
 
 
-router.post('/:id/tasks', verifyToken, validateObjectId, taskController.getTasksDeadline)
+router.get('/deadline', verifyToken, taskController.getTasksDeadline)
 
 module.exports = router
