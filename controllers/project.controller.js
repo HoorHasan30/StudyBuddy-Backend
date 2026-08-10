@@ -58,12 +58,18 @@ async function getOneProject(req, res) {
 // Get projects deadlines
 async function getProjectsDeadline(req, res) {
     try {
+        const todaysDate = new Date()
+        todaysDate.setHours(0,0,0,0)
+
         const myProjectsDeadline = await Project.find({
             $or: [
                 { owner: req.user._id },
                 { collaberators: req.user._id }
-            ]
-        }).select('deadline title')
+            ],
+            deadline:  { $gte: todaysDate }
+        })
+        .select('deadline title')
+        .sort({ deadline: 1 })
 
         res.status(200).json(myProjectsDeadline)
     }
