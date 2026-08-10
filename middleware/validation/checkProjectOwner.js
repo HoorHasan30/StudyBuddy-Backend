@@ -7,7 +7,7 @@ async function checkProjectOwner(req, res, next) {
     const isOwner = foundProject.owner.toString() === req.user._id.toString()
     
     const isCollaborator = foundProject.collaberators.some(
-        id => id.toString() === req.user._id.toString()
+        collaborator => collaborator._id.toString() === req.user._id.toString()
     )
 
     if (!isOwner && !isCollaborator) {
