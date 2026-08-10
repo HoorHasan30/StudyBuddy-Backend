@@ -50,7 +50,7 @@ async function getTableImg(req, res) {
         res.status(200).json(foundTimeTable)
 
     } catch (error) {
-        if (err.name === 'ValidationError') {
+        if (error.name === 'ValidationError') {
             return res.status(400).json({ message: error.message })
         }
         
