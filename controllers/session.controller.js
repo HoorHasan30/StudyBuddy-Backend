@@ -7,7 +7,6 @@ async function createSession(req, res) {
 
         const createdSession = await Session.create({
             duration,
-            topicsCovered,
             owner: req.user._id
         })
 

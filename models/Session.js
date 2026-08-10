@@ -5,10 +5,6 @@ const sessionSchema = new Schema({
         type: Number,
         required: true
     },
-    topicsCovered: {
-        type: String,
-        trim: true
-    },
     owner: {
         type: Schema.Types.ObjectId,
         ref: 'User'
