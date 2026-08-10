@@ -2,7 +2,10 @@ const { model, Schema } = require('mongoose')
 
 const timeTableSchema = new Schema({
     tableImage: {
-        type: String
+        url:{
+            type: String
+
+        }
     },
     owner: {
         type: Schema.Types.ObjectId,
