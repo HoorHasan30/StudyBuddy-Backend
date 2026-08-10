@@ -63,7 +63,7 @@ async function getProjectsDeadline(req, res) {
                 { owner: req.user._id },
                 { collaberators: req.user._id }
             ]
-        }).select('deadline')
+        }).select('deadline title')
 
         res.status(200).json(myProjectsDeadline)
     }

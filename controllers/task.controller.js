@@ -9,7 +9,7 @@ async function getTasksDeadline(req, res) {
                 { owner: req.user._id },
                 { collaberators: req.user._id }
             ]
-        }).select('deadline')
+        }).select('deadline title')
         res.status(200).json(myTasksDeadline)
     }
     catch (err) {
