@@ -1,177 +1,225 @@
-# StudyBuddy Frontend
+# StudyBuddy Backend API
 
 ## Overview
-StudyBuddy is a productivity dashboard that helps students and users manage courses, projects, tasks, schedules, and study sessions in one place. The frontend includes protected routes, JWT-authentication, a Pomodoro timer, and deadline tracking to support focused study management.
+This repository contains the Node.js, Express and MongoDB backend for **StudyBuddy**.  
+It provides authentication, project management, course and task tracking, Pomodoro session recording, and timetable endpoints for the StudyBuddy frontend.
 
-- Frontend: Deployed frontend
-- Backend API: Deployed Backend
-- Backend Repository: Backend GitHub Repository
+## Related Links
 
-## Screenshots
-
-### Home Page
-
-### Sign In / Sign Up Page
-
-### Dashboard
-
-### Courses / Projects / Tasks Pages
-
-### Pomodoro Session Page
+- **Backend API:** Deployed Backend URL
+- **Frontend Application:** Deployed Frontend URL
+- **Frontend Repository:** Frontend Github Repository URL
 
 ## Technologies Used
-- React
-- Vite
-- React Router
-- Axios
-- CSS
-- JWT-based protected authentication flow
+
+- Node.js
+- Express
+- MongoDB
+- Mongoose
+- JSON Web Tokens
+- bcrypt
+- dotenv
+- Morgan
+- CORS
+- Cloudinary middleware
 
 ## Features
-- User registration and login
-- Protected routes for authenticated users only
-- Dashboard with overview metrics
-- Course management
-- Project management
-- Task creation, editing, and tracking
-- Deadline tracking for projects and tasks
-- Timetable management (Photo Upload)
-- Pomodoro session tracking
-- Responsive and modern UI
+- User registration
+- User login and authentication
+- Authentication middleware
+- CRUD API endpoints for projects, sessions, timetable, courses, and tasks
+- Request handling with JSON support
+- CORS support for frontend integration
+- Cloudinary middleware support for file uploads
 
 ## Project Structure
 ```text
-src/
-├── assets/
-├── components/
-│   ├── LayoutWithoutNavbar.jsx
-│   ├── ProtectedRoute.jsx
-│   ├── RootLayout.jsx
-│   └── Navbar.jsx
-├── context/
-│   └── AuthContext.jsx
-├── pages/
-│   ├── Homepage.jsx
-│   ├── SigninPage.jsx
-│   ├── SignupPage.jsx
-│   ├── Dashboard.jsx
-│   ├── PageNotFound.jsx
-│   ├── courses/
-│   ├── projects/
-│   ├── sessions/
-│   ├── tasks/
-│   └── timetable/
-├── services/
-│   ├── authService.js
-│   ├── courseService.js
-│   ├── projectService.js
-│   ├── sessionService.js
-│   ├── timetableService.js
-│   └── tasksService.js
-├── styles/
-├── App.jsx
-├── main.jsx
-└── index.css
+server/
+├── config/
+├── controllers/
+├── middleware/
+├── models/
+├── routes/
+├── tests/
+├── app.js
+└── server.js
 ```
+
+### Folder Responsibilities
+
+| Folder        | Purpose                                         |
+| ------------- | ----------------------------------------------- |
+| `config`      | Database and application configuration          |
+| `controllers` | HTTP request and response handling              |
+| `middleware`  | Authentication, validation and error middleware |
+| `models`      | Mongoose schemas and models                     |
+| `routes`      | Express route definitions                       |
+| `tests`       | Automated tests                                 |
+| `app.js`      | Express application configuration               |
+| `server.js`   | Database connection and server startup          |
 
 ## Getting Started
 
 ### Prerequisites
-Install the following before running the project:
 
-- Node.js
-- A working backend API
+Install:
 
-The backend API must be running before the frontend can access protected data.
+- node.js
+- MongoDB locally or a MongoDB Atlas account
 
-### Installation
+## Installation
 
-#### 1. Clone the repository
+### 1. Clone the repository
 
 ```bash
-git clone FRONTEND_REPOSITORY_URL
-cd FRONTEND_REPOSITORY_NAME
+git clone BACKEND_REPOSITORY_URL
+cd STUDYBUDDY_BACKEND_REPOSITORY_NAME
 ```
 
-#### 2. Install dependencies
+### 2. Install dependencies
 
 ```bash
 npm i
 ```
 
-#### 3. Create the environment file
+### 3. Create the environment file
 
-Create a `.env` file in the root directory:
+Create `.env` in the root directory:
 
 ```env
-VITE_BACK_END_SERVER_URL=http://localhost:3000
+PORT=3000
+MONGODB_URI=your-connection-string
+CLIENT_URL=http://localhost:5173
+JWT_SECRET=unique-password-no-one-would-guess
 ```
 
-#### 4. Start the development server
+### 4. Start the development server
 
 ```bash
 npm run dev
 ```
 
-Then open:
+The API should be available at:
 
 ```text
-http://localhost:5173
+http://localhost:3000
 ```
 
-## Application Routes
+## Database Models
 
-| Route | Page | Access |
-| ----- | ---- | ------ |
-| `/` | Home page | Public |
-| `/sign-up` | Sign up page | Public |
-| `/sign-in` | Sign in page | Public |
-| `/dashboard` | Dashboard | Authenticated |
-| `/courses` | All courses | Authenticated |
-| `/courses/create` | Create course | Authenticated |
-| `/courses/:id` | Course details | Authenticated |
-| `/courses/:id/edit` | Edit course | Authenticated |
-| `/courses/:id/tasks` | Course tasks | Authenticated |
-| `/courses/:id/tasks/create` | Create task | Authenticated |
-| `/courses/:id/tasks/:taskId` | Task details | Authenticated |
-| `/courses/:id/tasks/:taskId/edit` | Edit task | Authenticated |
-| `/timetable` | Timetable | Authenticated |
-| `/timetable/create` | Create timetable | Authenticated |
-| `/sessions` | Pomodoro sessions | Authenticated |
-| `/projects` | All projects | Authenticated |
-| `/projects/create` | Create project | Authenticated |
-| `/projects/:projectId` | Project details | Authenticated |
-| `/projects/:projectId/edit` | Edit project | Authenticated |
-| `/projects/:projectId/tasks` | Project tasks | Authenticated |
-| `/projects/:projectId/tasks/create` | Create task | Authenticated |
-| `/projects/:projectId/tasks/:taskId` | Task details | Authenticated |
-| `/projects/:projectId/tasks/:taskId/edit` | Edit task | Authenticated |
-| `*` | Not found page | Public |
+### User
+| Field       | Type   | Rules                       |
 
-## User Stories
 
-- As a user, I want to sign up and log in securely.
-- As a user, I want to view my dashboard summary.
-- As a user, I want to manage my courses and projects.
-- As a user, I want to share a project with someone by username, so we can collaborate.
-    - As a collaborator, I want to manage ONLY the tasks on a shared project
-- As a user, I want to create and update tasks with deadlines so i can track my progress.
-- As a user, I want to upload my study timetable.
-- As a user, I want to use a Pomodoro timer for focused study sessions.
-- As a user, I want protected routes to prevent unauthorized access.
+
+## Entity Relationships
+
+Add your ERD image here:
+
+## API Base URL
+
+Local development:
+
+```text
+http://localhost:3000
+```
+
+Production:
+
+```text
+https://your-deployed-api.com
+```
+
+## Endpoints
+
+### Auth
+
+| Method | Endpoint       | Access | Description       |
+| ------ | -------------- | ------ | ----------------- |
+| `POST` | `/auth/register` | Public | Register user     |
+| `POST` | `/auth/login`    | Public | Login user        |
+| `POST` | `/auth/logout`   | Public | Logout user       |
+
+### Projects
+
+| Method   | Endpoint                  | Access        | Description           |
+| -------- | ------------------------- | ------------- | --------------------- |
+| `GET`    | `/projects`               | Authenticated | Get all projects      |
+| `GET`    | `/projects/:projectId`    | Authenticated | Get project details   |
+| `POST`   | `/projects`               | Authenticated | Create a project      |
+| `PUT`  | `/projects/:projectId`    | Authenticated | Update a project      |
+| `DELETE` | `/projects/:projectId`    | Authenticated | Delete a project      |
+
+### Sessions
+
+| Method | Endpoint         | Access        | Description                 |
+| ------ | ---------------- | ------------- | --------------------------- |
+| `GET`  | `/sessions`      | Authenticated | Get all study sessions      |
+| `POST` | `/sessions`      | Authenticated | Create a new session        |
+| `GET`  | `/sessions/:id`  | Authenticated | Get session details         |
+| `PUT`| `/sessions/:id`  | Authenticated | Update session              |
+| `DELETE`| `/sessions/:id` | Authenticated | Delete session              |
+
+### Timetable
+
+| Method   | Endpoint              | Access        | Description             |
+| -------- | --------------------- | ------------- | ----------------------- |
+| `GET`    | `/timetable`          | Authenticated | Get timetable entries   |
+| `POST`   | `/timetable`          | Authenticated | Create timetable entry  |
+| `GET`    | `/timetable/:id`      | Authenticated | Get timetable entry     |
+| `PUT`  | `/timetable/:id`      | Authenticated | Update timetable entry  |
+| `DELETE` | `/timetable/:id`      | Authenticated | Delete timetable entry  |
+
+### Courses
+
+| Method   | Endpoint              | Access        | Description              |
+| -------- | --------------------- | ------------- | ------------------------ |
+| `GET`    | `/courses`            | Authenticated | Get all courses         |
+| `GET`    | `/courses/:id`        | Authenticated | Get course details      |
+| `POST`   | `/courses`            | Authenticated | Create a course         |
+| `PUT`  | `/courses/:id`        | Authenticated | Update a course         |
+| `DELETE` | `/courses/:id`        | Authenticated | Delete a course         |
+
+### Tasks
+
+| Method   | Endpoint                    | Access        | Description             |
+| -------- | --------------------------- | ------------- | ----------------------- |
+| `GET`    | `/tasks`                    | Authenticated | Get all tasks           |
+| `GET`    | `/tasks/:id`                | Authenticated | Get task details        |
+| `POST`   | `/tasks`                    | Authenticated | Create a task           |
+| `PUT`  | `/tasks/:id`                | Authenticated | Update a task           |
+| `DELETE` | `/tasks/:id`                | Authenticated | Delete a task           |
+
+## Status Codes
+
+| Status | Meaning in this API                |
+| -----: | ---------------------------------- |
+| `200`  | Successful request                 |
+| `201`  | Resource created                   |
+| `400`  | Invalid request                    |
+| `401`  | Authentication required or invalid |
+| `403`  | Authenticated but not permitted    |
+| `404`  | Resource not found                 |
+| `409`  | Resource conflict                  |
+| `500`  | Unexpected server error           |
+
+## Testing
+
+Run tests:
+
+```bash
+npm test
+```
+Tests should use a dedicated test database or an in-memory database.
 
 ## Future Enhancements
-- Calendar view for timetable
-- Task reminders and notifications
-- More detailed analytics and productivity insights
-- Better mobile optimization
-- Improved accessibility features
+
 
 ## Team Members
 
-| Name | GitHub |
-| ---- | ------ |
-| Hoor Yousif | [GitHub profile] |
-| Walaa Ahmed | [GitHub profile] |
+| Name         | GitHub           | Responsibilities       |
+| ------------ | ---------------- | ---------------------- |
+| Walaa Ahmed | [GitHub profile] |        |
+| Hoor Yousif | [GitHub profile] |             |
 
 ## Credits
