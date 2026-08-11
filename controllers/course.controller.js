@@ -15,7 +15,7 @@ async function createCourse(req, res) {
         res.status(201).json(createdCourse)
     }
     catch (error) {
-        if (err.name === 'ValidationError') {
+        if (error.name === 'ValidationError') {
             return res.status(400).json({ message: err.message })
         }
 
