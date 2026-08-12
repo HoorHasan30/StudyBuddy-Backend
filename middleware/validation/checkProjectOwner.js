@@ -9,6 +9,7 @@ async function checkProjectOwner(req, res, next) {
             select: '_id username'
         }
     }).populate('collaberators')
+    .populate({ path: 'owner', select: '_id username' })
 
     const isOwner = foundProject.owner.toString() === req.user._id.toString()
 
