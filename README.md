@@ -6,9 +6,9 @@ It provides authentication, project management, course and task tracking, Pomodo
 
 ## Related Links
 
-- **Backend API:** Deployed Backend URL
+- **Backend API:** [Deployed Backend URL](https://studybuddy-backend-xvhe.onrender.com)
 - **Frontend Application:** Deployed Frontend URL
-- **Frontend Repository:** Frontend Github Repository URL
+- **Frontend Repository:** [Frontend Github Repository URL](https://github.com/HoorHasan30/StudyBuddy-Frontend)
 
 ## Technologies Used
 
@@ -39,6 +39,7 @@ server/
 ├── controllers/
 ├── middleware/
 ├── models/
+├── public/
 ├── routes/
 ├── tests/
 ├── app.js
@@ -53,6 +54,7 @@ server/
 | `controllers` | HTTP request and response handling              |
 | `middleware`  | Authentication, validation and error middleware |
 | `models`      | Mongoose schemas and models                     |
+| `public`       | ERD image and other static assets                          
 | `routes`      | Express route definitions                       |
 | `tests`       | Automated tests                                 |
 | `app.js`      | Express application configuration               |
@@ -72,8 +74,8 @@ Install:
 ### 1. Clone the repository
 
 ```bash
-git clone BACKEND_REPOSITORY_URL
-cd STUDYBUDDY_BACKEND_REPOSITORY_NAME
+git clone https://github.com/HoorHasan30/StudyBuddy-Backend
+cd StudyBuddy-Backend
 ```
 
 ### 2. Install dependencies
@@ -108,13 +110,54 @@ http://localhost:3000
 ## Database Models
 
 ### User
-| Field       | Type   | Rules                       |
+| Field          | Type   | Rules                                |
+|----------------|--------|--------------------------------------|
+| username       | String | required, unique, trimmed, lowercase |
+| hashedPassword | String | required                             |
 
+### Project
+| Field         | Type       | Rules     |
+|---------------|------------|-----------|
+| title         | String     | required  |
+| description   | String     | optional  |
+| deadline      | Date       | optional  |
+| owner         | ObjectId   | ref: User |
+| collaberators | [ObjectId] | ref: User |
+| tasks         | [ObjectId] | ref: Task |
 
+### Course
+| Field       | Type       | Rules             |
+|-------------|------------|-------------------|
+| title       | String     | required, trimmed |
+| description | String     | optional, trimmed |
+| owner       | ObjectId   | ref: User         |
+| tasks       | [ObjectId] | ref: Task         |
+
+### Task
+| Field    | Type     | Rules                                        |
+|----------|----------|----------------------------------------------|
+| title    | String   | required                                     |
+| deadline | Date     | required                                     |
+| priority | String   | required                                     |
+| status   | String   | required, default 'To Do', enum: To Do/Done  |
+| owner    | ObjectId | ref: User                                    |
+
+### Session
+| Field    | Type     | Rules     |
+|----------|----------|-----------|
+| duration | Number   | required  |
+| owner    | ObjectId | ref: User |
+
+### TimeTable
+| Field          | Type     | Rules     |
+|----------------|----------|-----------|
+| tableImage.url | String   | optional  |
+| owner          | ObjectId | ref: User |
 
 ## Entity Relationships
+![ERD image](/public/images/Project3.drawio%20(final).png)
 
-Add your ERD image here:
+
 
 ## API Base URL
 
@@ -127,7 +170,7 @@ http://localhost:3000
 Production:
 
 ```text
-https://your-deployed-api.com
+https://studybuddy-backend-xvhe.onrender.com
 ```
 
 ## Endpoints
@@ -214,12 +257,22 @@ Tests should use a dedicated test database or an in-memory database.
 
 ## Future Enhancements
 
+- Notification system for task deadlines and reminders
+- Calendar page management
+- Progress tracking across courses and projects 
+- Task assignment within courses
+
 
 ## Team Members
 
-| Name         | GitHub           | Responsibilities       |
-| ------------ | ---------------- | ---------------------- |
-| Walaa Ahmed | [GitHub profile] |        |
-| Hoor Yousif | [GitHub profile] |             |
+| Name        | GitHub                                              | Responsibilities                                                                 |
+| ----------- | ---------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Walaa Idrees | [GitHub profile](https://github.com/WA-2211)         | Session, Timetable, and Course features; cross-team bug fixes                     |
+| Hoor Yousif | [GitHub profile](https://github.com/HoorHasan30/)    | Project and Task features; cross-team bug fixes                                   |
 
 ## Credits
+
+- [nayaba/upload-images-multer-cloudinary](https://github.com/nayaba/upload-images-multer-cloudinary) — reference for Multer + Cloudinary image upload setup
+- [YouTube tutorial](https://youtu.be/Rw_QeJLnCK4) — reference for backend/auth implementation
+- [YouTube tutorial](https://youtu.be/rhWG5KbLwVs) — reference for backend/auth implementation
+- General Assembly Software Engineering Immersive — project guidelines and mentorship
